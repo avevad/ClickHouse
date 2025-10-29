@@ -67,7 +67,7 @@ void ReadFromObjectStorageStep::applyFilters(ActionDAGNodes added_filter_nodes)
     // has already been read, potentially in parallel across many streams. This can significantly reduce the
     // effectiveness of an Iceberg partition pruning, as unnecessary data may be read. Additionally, building ordered sets
     // at this stage enables the KeyCondition class to apply more efficient optimizations than for unordered sets.
-    VirtualColumnUtils::buildOrderedSetsForDAG(*filter_actions_dag, getContext());
+    VirtualColumnUtils::buildSetsForDAG(*filter_actions_dag, getContext());
 }
 
 void ReadFromObjectStorageStep::updatePrewhereInfo(const PrewhereInfoPtr & prewhere_info_value)

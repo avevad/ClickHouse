@@ -69,6 +69,7 @@ void buildSetsForDagImpl(const ActionsDAG & dag, const ContextPtr & context, boo
 {
     for (const auto & node : dag.getNodes())
     {
+        assert(reinterpret_cast<size_t>(&node) >= 0x1000);
         if (node.type == ActionsDAG::ActionType::COLUMN)
         {
             const ColumnSet * column_set = checkAndGetColumnConstData<const ColumnSet>(node.column.get());
@@ -78,6 +79,7 @@ void buildSetsForDagImpl(const ActionsDAG & dag, const ContextPtr & context, boo
             if (column_set)
             {
                 auto future_set = column_set->getData();
+                assert(reinterpret_cast<size_t>(&node) >= 0x1000);
                 if (!future_set->get())
                 {
                     if (auto * set_from_subquery = typeid_cast<FutureSetFromSubquery *>(future_set.get()))
